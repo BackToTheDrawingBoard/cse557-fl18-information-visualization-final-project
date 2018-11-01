@@ -40,10 +40,10 @@ the perspective of looking at the topic model of individual stories.
 Because topic modelling is such a versatile tool, I can create corpora
 of almost any source of textual data.  Hypothetical sources include the
 lyrics of popular songs, well-known novels, plays, or even technical
-documents, such as whitepapers and specifications.
+documents, such as white-papers and specifications.
 
 At least initially, I'm planning on following in the foot steps of
-Introduction to Digital Humanities and creating a corporus of books from
+Introduction to Digital Humanities and creating a corpus of books from
 \href{https://www.gutenberg.org/}{Project Gutenberg}.
 
 \section{Data Processing}
@@ -71,7 +71,29 @@ machine-learning developers.  I'm just a computer engineer.
 % choices of visual encodings. You use the Five Design Sheet
 % Methodology.
 
-% TODO
+The center of my visualization is going to be a force-network
+visualization of the topic-story relationships.  Accompanying this
+representation, I'm going to also have accompanying histogram views of
+the occurrences of topics in individual stories, as well as a pane that
+simply displays detailed information about a story or topic if selected
+in the force-network.
+
+The thesis of my design is that I want to push that the relationship
+between topics and documents isn't necessarily hierarchical.  That is to
+say that topics aren't exclusively observations on documents, and
+documents aren't solely representations of topics.  By representing both
+topics and documents as nodes in a force-network, they're given
+explicitly equal roles in the way that the network is constructed.  I'm
+toying around with the idea of having the ability to switch which class
+of node generates force within the graph, so that each class of node can
+be positioned in the graph in relation to the other.
+
+My design very much benefits from related work done in Serendip and
+SerendipSlim, as those tools act as useful foils for my visualization.
+I explicitly want to detach from the hyper-analytical approach that
+Serendip takes.  Serendip is mostly interested in analyzing the topic
+model itself, whereas I am more focused on exploring the relationships
+created between stories and topics.
 
 \section{Must-Have Features}
 \begin{itemize}
