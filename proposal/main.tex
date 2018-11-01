@@ -14,44 +14,95 @@ $\ $
 
 
 \section{Background and Motivation}
-Background and Motivation. Discuss your motivations and reasons for
-choosing this project, especially any background or research interests
-that may have influenced your decision.
+During my junior year, I took Dr. Anupam Basu's Introduction to Digital
+Humanities course, in which we discussed topic models.  In our class, we
+explored a tool called
+\href{http://vep.cs.wisc.edu/serendip/}{Serendip}, which visualizes
+topics as a matrix of relationships between texts in the corpora and
+topics.  Then, this semester, I took Dr. Neumann's Analysis of Network
+Data class, and it occurred to me that Serendip's matrix presentation of
+the topic model is visually similar to an adjacency matrix.
+
+I want to take a distinctly different approach than Serendip, though.
+While Serendip focuses on drilling down into specific relationships and
+presenting a large volume of information at once, I want to focus more
+on exploring the topic-story relationship in a more approachable,
+intuitive manner.
 
 \section{Project Objectives}
-Project Objectives. Provide the primary questions you are trying to
-answer with your visualization. What would you like to learn and
-accomplish? List the benefits.
+I would like to build an interface that allows for the creation and
+exploration of simple topic models, with a focus on drawing out the
+abstract relationship between a topic and a set of stories.  I'd like to
+emphasize exploring the relationship as a two-way street, not just from
+the perspective of looking at the topic model of individual stories.
 
 \section{Data}
-Data. From where and how are you collecting your data? If appropriate,
-provide a link to your data sources.
+Because topic modelling is such a versatile tool, I can create corpora
+of almost any source of textual data.  Hypothetical sources include the
+lyrics of popular songs, well-known novels, plays, or even technical
+documents, such as whitepapers and specifications.
+
+At least initially, I'm planning on following in the foot steps of
+Introduction to Digital Humanities and creating a corporus of books from
+\href{https://www.gutenberg.org/}{Project Gutenberg}.
 
 \section{Data Processing}
-Data Processing. Do you expect to do substantial data cleanup? What
-quantities do you plan to derive from your data? How will data
-processing be implemented?
+As far as manual cleanup of the corpus itself, I'm going to need to
+remove any extraneous text, so that the source files are only the raw
+text documents for the corpus.  In the case of documents from Project
+Gutenberg, I'll need to remove the header and footer that Project
+Gutenberg attaches. Other than the header and footer, the text files
+available there are relatively free of markup and extraneous
+information.
+
+I'm planning to do the topic model generation in the browser.  There are
+several Javascript libraries (such as
+\href{https://mimno.infosci.cornell.edu/jsLDA/}{jsLDA}) that implement
+topic modelling without relying on running a server.  I also have a
+rudimentary implementation of topic model generation that I could use,
+but it's definitely inferior to libraries developed by actual
+machine-learning developers.  I'm just a computer engineer.
 
 \section{Visualization Design}
-Visualization Design. How will you display your data? Provide some
-general ideas that you have for the visualization design. Create three
-alternative designs for your visualization. Create one final design that
-incorporates the best of your three designs. Describe your designs and
-justify your choices of visual encodings. You use the Five Design Sheet
-Methodology.
+% TODO:
+How will you display your data? Provide some general ideas that you have
+for the visualization design. Create three alternative designs for your
+visualization. Create one final design that incorporates the best of
+your three designs. Describe your designs and justify your choices of
+visual encodings. You use the Five Design Sheet Methodology.
 
 \section{Must-Have Features}
-Must-Have Features. List the features without which you would consider
-your project to be a failure.
+\begin{itemize}
+	\item Topic-Model generation
+	\item Presentation of resulting topics
+	\item Network graph of topic-story relationships
+	\item Detailed view for presenting per-story topic breakdown
+\end{itemize}
 
 \section{Optional Features}
-Optional Features. List the features which you consider to be nice to
-have, but not critical.
+\begin{itemize}
+	\item Customization of topic-model parameters
+	\item Coding the weight of the relationship strength into the link
+		between stories and topics
+	\item Some means of filtering the documents displayed
+	\item Preset configurations for the network
+\end{itemize}
 
 \section{Project Schedule}
-Project Schedule. Make sure that you plan your work so that you can
-avoid a big rush right before the final project deadline, and delegate
-different modules and responsibilities among your team members. Write
-this in terms of weekly deadlines.
+
+\begin{tabular}{|r|c|l|}
+	\hline
+	                          &  Nov. 9th & Topic-model debug output \\
+														&           & Dummy network with working forces\\\hline
+	              Milestone I & Nov. 13th & Card for topics on the sidebar \\\hline
+							 Milestone II & Nov. 27th & Filtering topics \\
+														&           & Link network with topics \\\hline
+					 In-Class Studies & Nov. 29th & \\\hline
+	                          &  Dec. 7th & Outline presentation \\
+														&           & Process book \\\hline
+	                          & Dec. 14th & Finish presentation \\
+														&           & Glitz and color \\\hline
+	Submission + Presentation & Dec. 19th & \\\hline
+\end{tabular}
 
 \end{document}
