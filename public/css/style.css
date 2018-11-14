@@ -163,7 +163,7 @@ body {
 	overflow: auto;
 }
 
-#topic-container ul {
+.topic-list {
 	/* color: #F2F5EA; */
 	color: #dbd6d2;
 	list-style: none;
@@ -171,7 +171,7 @@ body {
 	padding: 0;
 }
 
-#topic-container li {
+.topic-list a {
 	/* width: 100%; */
 	background-color: #dbd6d2;
 	color: #2C363F;
@@ -179,6 +179,7 @@ body {
 	margin: 0.4em 0;
 	padding: 0.3em 0.8em 0.5em 0.8em;
 	border-radius: 0.5em;
+	display: block;
 }
 
 #topic-container .enabled {
