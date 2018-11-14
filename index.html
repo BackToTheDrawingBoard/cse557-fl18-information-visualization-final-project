@@ -13,7 +13,7 @@
 		<div class="padding"></div>
 		<a href="/proposal/PeterOlson_proposal.pdf">Project Proposal</a>
 		<a href="https://github.com/BackToTheDrawingBoard/cse557-fl18-information-visualization-final-project">Public GitHub Repository</a> 
-		<a href="/app">Topic Modelling</a>
+		<a href="/app">Topic Modeling</a>
 	</div>
 	<div class="log-content">
 		<!--<div class="log-post">
@@ -37,7 +37,7 @@
 				the object-model side of things, with decidedly little to show
 				for the actual visualization portion of the project.
 				Nonetheless, what follows is the present state of the topic
-				modelling project.</p>
+				modeling project.</p>
 				
 				<h3>Overview and Motivation</h3>
 
@@ -45,7 +45,7 @@
 				project.  The desire is still to explore the relational
 				implications of the data in a topic model by means of a
 				force-network.  The main reason for this is that I find topic
-				modelling fascinating, and I want to see how different ways of
+				modeling fascinating, and I want to see how different ways of
 				tuning a topic model affects the way the data distributes itself
 				in multiple dimensions.</p>
 				
@@ -57,8 +57,8 @@
 				
 				<h3>Questions</h3>
 				
-				<p>As I'm implementing a different style of topic modelling (LDA
-				modelling, this time), I'm becoming more and more curious how
+				<p>As I'm implementing a different style of topic modeling (LDA
+				modeling, this time), I'm becoming more and more curious how
 				one can tune the topic models for fast computation and reliable
 				convergence.</p>
 				
@@ -68,21 +68,21 @@
 				calls it a day.  LDA randomly distributes words between topics
 				with duplicates, then iterates over the data set, processing it
 				an arbitrary number of times.  Ideally, by the time the
-				modelling is over, the topics have converged towards unique
+				modeling is over, the topics have converged towards unique
 				terms and the model is stable.</p>
 
 				<p>That process, however, sort of begs the question of what an
 				unstable process model would look like.  I'm interested to
-				explore that with the implementation of LDA Topic Modelling that
+				explore that with the implementation of LDA Topic modeling that
 				I've pulled into my project.</p>
 
 				<h3>Data</h3>
 				
 				<p>For my corpus, I've somewhat arbitrarily chosen the twenty
-				most popular text on Project Gutenbern, selected from 
+				most popular text on Project Gutenberg, selected from 
 				<a href="http://www.gutenberg.org/browse/scores/top">this page</a>. 
-				Unfortunately, Javascript isn't quite as efficient as the C++
-				and Python topic modelling implementations that I'm familliar
+				Unfortunately, JavaScript isn't quite as efficient as the C++
+				and Python topic modeling implementations that I'm familiar
 				with, and it's turned out to be extraordinarily slow to process
 				so many records with the LDA algorithm.</p>
 
@@ -92,16 +92,16 @@
 				presidential addresses and the like.  However, given that I'd
 				purely swapping one set of raw text files for another, the
 				Top-20 corpus is more than sufficient for project development.
-				The flexibility of the application to accomodate many different
+				The flexibility of the application to accommodate many different
 				kinds of input data is also one of the great strengths of topic
-				modelling as a means of distant reading.</p>
+				modeling as a means of distant reading.</p>
 
 				<h3>Exploratory Data Analysis</h3>
 
-				<p>As I've mentioned, I've used topic modelling tools in the
+				<p>As I've mentioned, I've used topic modeling tools in the
 				past, specifically as part of Dr. Anupam Basu's Introduction to
 				Digital Humanities class as a means of "distant reading".
-				Conveniently enough, though, familliarity with the algorithms
+				Conveniently enough, though, familiarity with the algorithms
 				involved is all that's necessary for analysis of a topic model.
 				The rest of the data analysis is tied exclusively in with
 				displaying it as whatever sort of visualization one desires.
@@ -118,9 +118,9 @@
 				<h3>Design Evolution</h3>
 				
 				<p>Most of the design evolution that's occurred has been on the
-				backend of the project.  The object model has matured
+				back-end of the project.  The object model has matured
 				significantly, and I'm confident that it's readily extensible at
-				this point.  With the majority of the saffolding out of the way
+				this point.  With the majority of the scaffolding out of the way
 				for generating topics, processing the data, and pulling the
 				topics into accessible form, the remainder of the project should
 				be simply implementing functionality that I've already practiced
@@ -131,7 +131,7 @@
 				<p>The project is maturing into a more interactive design than I
 				was initially anticipating.  As I'm creating more and more of
 				the application, I'm finding that I'm far more interested in
-				tuning and manipulating the topic modelling algorithm than I am
+				tuning and manipulating the topic modeling algorithm than I am
 				in necessarily exploring the resulting model.  I will likely
 				pursue this interest and continue pushing for greater expression
 				of the model, rather than simply implementing canned presets for
@@ -139,11 +139,11 @@
 
 				<h3>Implementation</h3>
 				
-				<p>Presently, all that's implemented is the inital topic model
+				<p>Presently, all that's implemented is the initial topic model
 				generation.  As I've mentioned above, simply getting the
 				algorithms working and producing accessible topics is a
 				non-trivial component of this project, and the more time spent
-				working on the topic modelling algorithms the smoother the
+				working on the topic modeling algorithms the smoother the
 				resulting interaction with the corpus can be.</p>
 
 				<p>The remaining work is to expose knobs for tuning the topic
@@ -163,9 +163,9 @@
 				<p>Other than selecting different texts for the corpus, though,
 				the remaining work is just grinding out an interface for the
 				algorithm I've re-implemented.  I was quite surprised at how
-				ill-kempt the LDA library that I found on GitHub was, and, while
+				ill-kept the LDA library that I found on GitHub was, and, while
 				I was able to reuse some of the code, I also would up
-				re-implementing a large portion of the modelling code to better
+				re-implementing a large portion of the modeling code to better
 				suit the object model of my application.</p>
 
 			</div>
