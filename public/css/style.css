@@ -48,7 +48,7 @@ body {
 	margin: 0;
 	padding: 0.3em 0.8em;
 	color: #E75A7C;
-	font-size: 18pt;
+	font-size: 1.5em;
 }
 
 .log-content {
@@ -69,15 +69,21 @@ body {
 	align-items:baseline;
 }
 
+.log-header h2 {
+	font-size: 1.5em;
+}
+
 .log-header > * {
-	margin-bottom: 0.8em;
+	margin-bottom: 1.2em;
+	display: inline-block;
 }
 
 .log-header p {
-	font-size: 10pt;
+	font-size: 0.9em;
 }
 
-.log-body p:first-child {
+.log-body p:first-child,
+.log-body h3:first-child {
 	margin-top: 0em;
 }
 
