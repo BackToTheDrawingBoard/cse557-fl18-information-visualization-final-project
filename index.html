@@ -2,33 +2,173 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>DataVis - Final Project</title>
-	<link rel="stylesheet" type="text/css" href="public/css/style.css">
+	<title>Project Documentation</title>
+	<link rel="stylesheet" type="text/css" href="/public/css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 <body>
-	<a href="/doc" id="annotation-link">Documentation</a>
-	<div id="sidebar">
-		<h1>Topic Model Visualzation</h1>
+	<div class="titlebar">
+		<h1>Topic Model Documentation</h1>
+		<div class="padding"></div>
+		<a href="/proposal/PeterOlson_proposal.pdf">Project Proposal</a>
+		<a href="/app">Topic Modelling</a>
 	</div>
-	<div id="content">
+	<div class="log-content">
+		<!--<div class="log-post">
+			<div class="log-header">
+				<h2>Lorem Ipsum</h2>
+				<p>Nov. 13th, 2018</p>
+			</div>
+			<div class="log-body">
+				<h3>Subtitle</h3> 
+				<p>Lorem Ipsum</p>
+			</div>
+		</div>-->
+		<div class="log-post">
+			<div class="log-header">
+				<h2>Milestone I Process Update</h2>
+				<p>Nov. 13th, 2018</p>
+			</div>
+			<div class="log-body">
+
+				<p>Most of the work that I've accomplished thus far has been on
+				the object-model side of things, with decidedly little to show
+				for the actual visualization portion of the project.
+				Nonetheless, what follows is the present state of the topic
+				modelling project.</p>
+				
+				<h3>Overview and Motivation</h3>
+
+				<p>Not much has changed for the overview and motivation of the
+				project.  The desire is still to explore the relational
+				implications of the data in a topic model by means of a
+				force-network.  The main reason for this is that I find topic
+				modelling fascinating, and I want to see how different ways of
+				tuning a topic model affects the way the data distributes itself
+				in multiple dimensions.</p>
+				
+				<p>The major benefit of using a force-network for visualizing
+				the topic model is that it allows stories and topics to become
+				implicitly equal, whereas most quantitative means of analyzing
+				the topic model lend themselves to seeing the topics as strictly
+				an observation on the corpus of text.</p>
+				
+				<h3>Questions</h3>
+				
+				<p>As I'm implementing a different style of topic modelling (LDA
+				modelling, this time), I'm becoming more and more curious how
+				one can tune the topic models for fast computation and reliable
+				convergence.</p>
+				
+				<p>My existing implementation of a topic-model algorithm is
+				strictly random and heuristic.  There is no cleverness in the
+				implementation -- it simply assigns words to random topics and
+				calls it a day.  LDA randomly distributes words between topics
+				with duplicates, then iterates over the data set, processing it
+				an arbitrary number of times.  Ideally, by the time the
+				modelling is over, the topics have converged towards unique
+				terms and the model is stable.</p>
+
+				<p>That process, however, sort of begs the question of what an
+				unstable process model would look like.  I'm interested to
+				explore that with the implementation of LDA Topic Modelling that
+				I've pulled into my project.</p>
+
+				<h3>Data</h3>
+				
+				<p>For my corpus, I've somewhat arbitrarily chosen the twenty
+				most popular text on Project Gutenbern, selected from 
+				<a href="http://www.gutenberg.org/browse/scores/top">this page</a>. 
+				Unfortunately, Javascript isn't quite as efficient as the C++
+				and Python topic modelling implementations that I'm familliar
+				with, and it's turned out to be extraordinarily slow to process
+				so many records with the LDA algorithm.</p>
+
+				<p>For further development of the data set, it may be worth
+				swapping out the Top-20 texts for something smaller.  Song
+				lyrics come to mind, as do public addresses, such as
+				presidential addresses and the like.  However, given that I'd
+				purely swapping one set of raw text files for another, the
+				Top-20 corpus is more than sufficient for project development.
+				The flexibility of the application to accomodate many different
+				kinds of input data is also one of the great strengths of topic
+				modelling as a means of distant reading.</p>
+
+				<h3>Exploratory Data Analysis</h3>
+
+				<p>As I've mentioned, I've used topic modelling tools in the
+				past, specifically as part of Dr. Anupam Basu's Introduction to
+				Digital Humanities class as a means of "distant reading".
+				Conveniently enough, though, familliarity with the algorithms
+				involved is all that's necessary for analysis of a topic model.
+				The rest of the data analysis is tied exclusively in with
+				displaying it as whatever sort of visualization one desires.
+				Topic models are one of those pesky data structures that's quite
+				simple in theory (it's just a list of weights between stories
+				and topics, after all) and yet also exceptionally difficult to
+				visualize in one's head.</p>
+
+				
+				<p>More detail on the exploratory data analysis can be found in
+				the initial project proposal, which is linked in the title bar.
+				</p>
+
+				<h3>Design Evolution</h3>
+				
+				<p>Most of the design evolution that's occurred has been on the
+				backend of the project.  The object model has matured
+				significantly, and I'm confident that it's readily extensible at
+				this point.  With the majority of the saffolding out of the way
+				for generating topics, processing the data, and pulling the
+				topics into accessible form, the remainder of the project should
+				be simply implementing functionality that I've already practiced
+				in the studios and previous assignments.  The single biggest
+				hurdle that I'm facing now is implementing all the knobs and
+				dials to tune the topic model creation.</p>
+				
+				<p>The project is maturing into a more interactive design than I
+				was initially anticipating.  As I'm creating more and more of
+				the application, I'm finding that I'm far more interested in
+				tuning and manipulating the topic modelling algorithm than I am
+				in necessarily exploring the resulting model.  I will likely
+				pursue this interest and continue pushing for greater expression
+				of the model, rather than simply implementing canned presets for
+				the algorithm.</p>
+
+				<h3>Implementation</h3>
+				
+				<p>Presently, all that's implemented is the inital topic model
+				generation.  As I've mentioned above, simply getting the
+				algorithms working and producing accessible topics is a
+				non-trivial component of this project, and the more time spent
+				working on the topic modelling algorithms the smoother the
+				resulting interaction with the corpus can be.</p>
+
+				<p>The remaining work is to expose knobs for tuning the topic
+				generation parameters, slap the topic model weights into a
+				d3 force-network, and display per-story histograms of the topic
+				distributions.  Then, of course, polish everything to a suitable
+				level of shine.</p>
+
+				<h3>Evaluation</h3>
+				
+				<p>The biggest improvement that I think I can make going
+				forwards is by collecting a different corpus, one composed of
+				shorter texts.  Calculating a topic-model of Moby Dick is a
+				non-trivial task, and it's more than enough to bring my desktop
+				computer to a crawl.</p>
+				
+				<p>Other than selecting different texts for the corpus, though,
+				the remaining work is just grinding out an interface for the
+				algorithm I've re-implemented.  I was quite surprised at how
+				ill-kempt the LDA library that I found on GitHub was, and, while
+				I was able to reuse some of the code, I also would up
+				re-implementing a large portion of the modelling code to better
+				suit the object model of my application.</p>
+
+			</div>
+		</div>
 	</div>
-	<!-- Libraries -->
-    <script type="application/javascript" src="public/js/d3.js"></script>
-	<!-- Classes -->
-    <script type="application/javascript" src="public/js/Text/Corpus.js"></script>
-    <script type="application/javascript" src="public/js/Text/Story.js"></script>
-	<script type="application/javascript" src="public/js/TopicModels/Topic.js"></script>
-	<script type="application/javascript" src="public/js/TopicModels/stopwords.js"></script>
-	<script type="application/javascript" src="public/js/TopicModels/TopicModel.js"></script>
-	<script type="application/javascript" src="public/js/TopicModels/NaiveTopicModel.js"></script>
-	<script type="application/javascript" src="public/js/TopicModels/LDATopicModel.js"></script>
-	<script type="application/javascript" src="public/js/Windows/Window.js"></script>
-    <script type="application/javascript" src="public/js/Windows/StoryCardController.js"></script>
-    <script type="application/javascript" src="public/js/Windows/TopicNetwork.js"></script>
-	<script type="application/javascript" src="public/js/Sidebar/Controller.js"></script>
-	<!-- Main function -->
-    <script type="application/javascript" src="public/js/main.js"></script>
 </body>
 </html>
