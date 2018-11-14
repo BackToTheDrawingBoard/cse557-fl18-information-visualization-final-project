@@ -56,7 +56,7 @@ class Controller
 			for (var i in data) {
 				if (i == "columns") continue;
 				/* FIXME: debugging shim */
-				if (i > 1) break;
+				// if (i > 1) break;
 				var d = data[i];
 				corpus_ref.addStory(new Story("data/" + d.file, d.title,
 										d.subtitle, d.author, d.rank));
