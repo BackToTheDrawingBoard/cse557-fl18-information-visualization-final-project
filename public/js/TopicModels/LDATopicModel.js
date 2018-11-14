@@ -246,7 +246,7 @@ class LDATopicModel extends TopicModel
 
 		/* awaisathar's magic numbers */
 		// this.configure(documents, V, 1000, 2000, 100, 10);
-		this.configure(documents, V, 1, 10, 50, 5);
+		this.configure(documents, V, 100, 10, 50, 5);
 		this.gibbs(K, alpha, beta);
 
 		/* importance of a topic to a document */
