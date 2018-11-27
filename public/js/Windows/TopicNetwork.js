@@ -142,8 +142,10 @@ class TopicNetwork extends Window
 					}
 				})
 				.on('drag', (n) => {
-					n.fx = d3.event.x;
-					n.fy = d3.event.y;
+					if (n.isTopic) {
+						n.fx = d3.event.x;
+						n.fy = d3.event.y;
+					}
 				})
 				.on('end', (n) => {
 					if (!d3.event.active)
@@ -227,14 +229,14 @@ class TopicNetwork extends Window
 		this.frame.classed("topic-network-window", true);
 		this.enabled = false;
 
-		var rect = this.parent_div.node().getBoundingClientRect();
-		this.svg = parent_div.append("svg")
+		var rect = this.frame.node().getBoundingClientRect();
+		this.svg = this.frame.append("svg")
 			.attr("height", "100%")
 			.attr("width", "100%")
 			.style("background-color", "pink")
 			;
 
-		this.corner_list = parent_div
+		this.corner_list = this.frame
 			.append("div").attr("id", "corner-list")
 			.append("h3").text("Selection")
 			.append("ul")

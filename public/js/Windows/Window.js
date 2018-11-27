@@ -7,16 +7,16 @@ class Window
 {
     __hide ()
 	{
-		this.frame.attr("display", "hidden");
+		this.frame.style("display", "none");
 		if (this.stop)
-			this.stop()
+			this.stop();
 	}
 
     __show ()
 	{
-		this.frame.attr("display", "visible");
+		this.frame.style("display", "block");
 		if (this.start)
-			this.start()
+			this.start();
 	}
 
     /**
@@ -28,7 +28,7 @@ class Window
      */
 	display ()
 	{
-		if (this.frame.attr("display") == "hidden") {
+		if (this.frame.style("display") == "none") {
             g_WindowList.forEach(x => x.__hide());
             this.__show();
 			return true;
@@ -51,7 +51,7 @@ class Window
     {
 		this.parent_div = parent_div;
 		this.frame = parent_div.append("div")
-			.attr("display", "hidden")
+			.style("display", "none")
 			;
 
         g_WindowList.push(this);
