@@ -9,6 +9,8 @@ class TopicNetwork extends Window
 	start ()
 	{
 		this.enabled = true;
+		if (this.refreshDisplay)
+			this.refreshDisplay();
 	}
 
 	/** stop:
@@ -17,6 +19,8 @@ class TopicNetwork extends Window
 	stop ()
 	{
 		this.enabled = false;
+		if (this.suspendDisplay)
+			this.suspendDisplay();
 	}
 
 	/** load_data:
@@ -30,10 +34,36 @@ class TopicNetwork extends Window
 		this.stories = model.corpus.stories;
 		this.topics = model.topics;
 
+		return this.redraw();
+	}
+
+	update_selection_list ()
+	{
+		var li = this.corner_list.selectAll('li')
+			.data(this.stories.filter(s => s.selected), s => s.filename);
+
+		var li_enter = li.enter().append('li');
+		li_enter.append('b').text(s => s.title);
+		li_enter.append('span').text(s => s.author);
+		console.log(this.stories.filter(s => s.selected));
+
+		li.exit().remove();
+	}
+
+	redraw ()
+	{
+
 		var rect = this.svg.node().getBoundingClientRect();
 		var N = this.stories.length;
-		// var M = this.topics.length;
-		var M = 3;
+		var M = this.topics.length;
+		// var M = 4;
+
+		this.svg.attr("viewBox", 
+					  (-rect.width / 2) + " "
+					+ (-rect.height / 2) + " "
+					+ (rect.width) + " "
+					+ (rect.height)
+				)
 
 		/* Setup nodes for the simulation */
 		var nodes = new Array();
@@ -42,85 +72,150 @@ class TopicNetwork extends Window
 			nodes.push({
 				id : i,
 				isTopic : false,
-				color : "green",
+				color : "blue",
 				data : this.stories[i],
+				radius : 10,
+				/*
 				x : 0,
 				y : 0
+				*/
 			});
 		}
 		/* topic nodes */
 		for (var i = 0; i < M; i++) {
-			var rad = Math.PI * 2 * ((i + 1) / M);
-			console.log("rad", rad);
+			var rad = -Math.PI * 2 * (i / M) + Math.PI;
 			nodes.push({
 				id : N + i,
 				isTopic : true,
-				color : "blue",
+				color : "green",
 				data : this.topics[i],
+				radius : 20,
 				fx : Math.sin(rad) * (rect.width * 0.4),
 				fy : Math.cos(rad) * (rect.height * 0.4)
 			});
 		}
 		/* Setup edges for the simulation */
 		var edges = new Array();
-		for (var i = 0; i < N; i++) {
-			for (var j = 0; j < M; j++) {
-				edges.push({
-					source: i,
-					target: N + j,
-					weight: model.theta[i][j]
+		var flat_edges = new Array();
+		for (var i = 0; i < M; i++) {
+			edges.push(new Array());
+			for (var j = 0; j < N; j++) {
+				edges[i].push({
+					source: j,
+					target: N + i,
+					weight: this.weights[j][i],
+					topic: this.topics[i]
 				});
+				flat_edges[(i * N) + j] = edges[i][j];
 			}
 		}
 
+		/* Setup simulation */
+		var link_strength_scale = d3
+			.scalePow().exponent(3)
+			.domain([d3.min(flat_edges.map(e => e.weight)),
+						d3.max(flat_edges.map(e => e.weight))])
+			.range([0.1, 6]);
+		var simulation = d3.forceSimulation(nodes)
+			// .force("charge", d3.forceManyBody().strength(-5))
+			// .force("center", d3.forceCenter())
+			.force("bump", d3.forceCollide().radius(d => d.radius))
+			.stop();
+
 		/* setup vis */
 		var tn = this;
-		var circles = tn.svg.selectAll('circle').data(nodes);
-		var lines = tn.svg.selectAll('line').data(edges);
 
-		var circlesEnter = circles.enter().append('g');
+		var node_drag_callback = sim => {
+			return d3.drag()
+				.on('start', (n) => {
+					if (!d3.event.active) {
+						console.log("restarting sim");
+						sim.alphaTarget(0.3).restart();
+					}
+					if (n.isTopic) {
+						n.fx = d3.event.x;
+						n.fy = d3.event.y;
+					}
+					else {
+						n.data.selected = !n.data.selected;
+						tn.update_selection_list();
+					}
+				})
+				.on('drag', (n) => {
+					n.fx = d3.event.x;
+					n.fy = d3.event.y;
+				})
+				.on('end', (n) => {
+					if (!d3.event.active)
+						sim.alphaTarget(0.001);
+					if (!n.isTopic) {
+						n.fx = null;
+						n.fy = null;
+					}
+				})
+		};
 
 		var ticked = function () {
-			var rect = tn.svg.node().getBoundingClientRect();
-			var x_scale = d3.scaleLinear()
-				.domain([-rect.width / 2, rect.width / 2])
-				.range([0, 100]);
-			var y_scale = d3.scaleLinear()
-				.domain([-rect.height / 2, rect.height / 2])
-				.range([0, 100]);
+			var lines = tn.svg.selectAll('line').data(flat_edges);
+			lines.enter().append('line')
+				.attr('stroke', 'grey')
+				.attr('width', '2px')
+				.merge(lines)
+				.attr('x1', d => d.source.x)
+				.attr('y1', d => d.source.y)
+				.attr('x2', d => d.target.x)
+				.attr('y2', d => d.target.y)
+				.style('visibility', d => !d.topic.selected ?
+											'hidden' : 'visible')
+				;
+			lines.exit().remove();
 
-			circles.enter().append('circle')
-				.attr('r', function (d) {
-					if (d.isTopic)
-						return 20;
-					return 10;
-				})
-				.attr('fill', d => d.color)
-				.append('g')
-					.append('t')
-				.merge(circles)
-				.attr('cx', function (d) {
-					return x_scale(d.x) + "%";
-				})
-				.attr('cy', function (d) {
-					return y_scale(d.y) + "%";
-				})
+			var circles = tn.svg.selectAll('.tn-circle').data(nodes);
+			var circlesEnter = circles.enter().append('g')
+				.classed("tn-circle", true)
+				.call(node_drag_callback(simulation))
 				;
 
+			circlesEnter.append('circle')
+				.attr('r', d => d.radius)
+				.attr('fill', d => d.color)
+				;
+			circlesEnter.append('text')
+				.text(d => d.isTopic ? d.id - N : '')
+				.attr('text-anchor', 'middle')
+				.attr('dominant-baseline', 'middle')
+				.attr('stroke', 'white')
+				.attr('fill', 'white')
+				;
+			circlesEnter.merge(circles)
+				.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')')
+				.style('visibility', d => d.isTopic && !d.data.selected ?
+											'hidden' : 'visible')
+				.classed('circ-selected', d => !d.isTopic && d.data.selected)
+				;
 			circles.exit().remove();
 		};
 
-		console.log(tn.svg.attr("width"));
+		simulation.on("tick", ticked);
+			simulation.restart();
 
-		/* Setup simulation */
-		var simulation = d3.forceSimulation(nodes)
-			.force("charge", d3.forceManyBody().strength(-10))
-			.force("center", d3.forceCenter())
-			.force("link", d3.forceLink(edges)
-					.strength(d => 20 * d.weight)
-			)
-			.on("tick", ticked)
-			;
+		/* return a callback to refresh the simulation's forces */
+		var refresh_forces = function () {
+			simulation.alpha(0.3).restart();
+			for (var i = 0; i < M; i++) {
+				simulation.force("topic_" + i, tn.topics[i].selected
+					? d3.forceLink(edges[i])
+						.id(n => n.id)
+						.strength(d => link_strength_scale(d.weight))
+					: null
+				)
+			}
+		};
+		if (this.enabled)
+			refresh_forces();
+		this.refreshDisplay = refresh_forces;
+		this.suspendDisplay = simulation.stop;
+		return refresh_forces;
 	}
 
 	/**
@@ -131,10 +226,18 @@ class TopicNetwork extends Window
 		super(parent_div);
 		this.frame.classed("topic-network-window", true);
 		this.enabled = false;
+
+		var rect = this.parent_div.node().getBoundingClientRect();
 		this.svg = parent_div.append("svg")
 			.attr("height", "100%")
 			.attr("width", "100%")
-			.style("background-color", "pink");
-		console.log(this.svg);
+			.style("background-color", "pink")
+			;
+
+		this.corner_list = parent_div
+			.append("div").attr("id", "corner-list")
+			.append("h3").text("Selection")
+			.append("ul")
+			;
 	}
 }

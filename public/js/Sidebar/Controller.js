@@ -3,8 +3,9 @@ class Controller
 	/**
 	 * handles topic_list
 	 */
-	updateTopicList ()
+	updateTopicList (refreshSimulation)
 	{
+		console.log(refreshSimulation);
 		if (!this.model.hasRun)
 			return;
 
@@ -13,7 +14,7 @@ class Controller
 		var a = this.topic_list.selectAll("a")
 			.data(this.model.topics);
 
-		a.enter().append("a").merge(a)
+		a.enter().append("a")
 			.attr("title", d => {
 				var str = "Top words in topic:\n";
 				var words = d.getTopWords(10);
@@ -21,7 +22,12 @@ class Controller
 					str += words[i].rank + ": " + words[i].word + "(" + words[i].percentage.toPrecision(2) + "%)\n";
 				return str;
 			})
+			.on('click', d => {
+				d.selected = d.selected ? false : true; 
+				refreshSimulation();
+			})
 			.text((d, i) => i + ": " + d.getTopWord().word)
+			.classed("selected", d => d.selected)
 			;
 
 		a.exit().remove();
@@ -37,10 +43,7 @@ class Controller
 		else
 			console.log("Updating model segment");
 
-		/* update topic list in the sidebar */
-		this.updateTopicList();
-		/* update the model used by the topic network */
-		this.tn.load_data(this.model);
+		this.updateTopicList(this.tn.load_data(this.model));
 	}
 
 	/**

@@ -71,6 +71,7 @@ class Story
 		this.title = title;
 		this.subtitle = subtitle;
 		this.rank = rank;
+		this.filename = filename;
 		
 		/* fly away into the land of asynchronous callbacks to load the story */
 		var story_ref = this;

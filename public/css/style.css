@@ -125,6 +125,37 @@ body {
 	background-color: white;
 }
 
+#corner-list {
+	position: absolute;
+	display: block;
+	bottom: 0;
+	right: 0;
+	background-color: #2C363F;
+	padding: 0.2em 0.5em 0.6em 0.8em;
+	border-top-left-radius: 0.8em;
+	background-color: #2C363F;
+}
+
+#corner-list ul {
+	padding: 0.2em 0 0 0;
+	margin: 0;
+	list-style: none
+}
+
+#corner-list ul b {
+	margin-right: 0.3em;
+}
+
+#corner-list h3 {
+	color: #E75A7C;
+	margin: 0;
+	padding: 0;
+}
+
+.circ-selected circle {
+	stroke: white;
+}
+
 #content {
 	position: absolute;
 	right: 0;
