@@ -14,31 +14,44 @@ class Story
      */
     joinCorpus (corpus)
     {
-	var story_ref = this;
-	return this.loadPromise.then(function (text) {
-			/* Split on whitespace first, the replace individual
-			 * characters in the words to save on memory usage versus
-			 * having to do a full-document regex. */
+		/* reset wordIndices and frequency */
+		this.wordIndices = new Array();
+		this.frequency = new Array();
+
+		var story_ref = this;
+		return this.loadPromise.then(function (text) {
+			/* Split on whitespace first, the replace individual characters in
+			 * the words to save on memory usage versus having to do a
+			 * full-document regex. */
 			var chunks = text.split(/\s/g);
 
 			for (var i in chunks) {
-				/* normalize and remove all non-word or apostraphe
-				 * characters */
+				/* normalize and remove all non-word or apostraphe characters */
 				var w = chunks[i].toLowerCase().replace(/[^\'\w]+/g, '');
 				/* skip lame words */
-				if (w.length <= 1 || stopwords[w] || !isNaN(+w))
+				if (!w || w.length <= 1 || stopwords[w] || !isNaN(+w))
 					continue;
 
 				var idx = corpus.vocab.indexOf(w);
+				/* update frequency and vocab */
 				if (idx != -1) {
 					corpus.frequency[idx] += 1;
 				}
-				else if (w) {
-					corpus.frequency[corpus.vocab.length] = 1;
+				else {
+					idx = corpus.vocab.length;
+					corpus.frequency[idx] = 1;
 					corpus.vocab.push(w);
 				}
+				/* update story's frequency table */
+				if (story_ref.frequency[idx])
+					story_ref.frequency[idx] += 1;
+				else
+					story_ref.frequency[idx] = 1;
+
+				/* push onto story's wordIndices */
 				story_ref.wordIndices.push(corpus.vocab.indexOf(w));
 			}
+			story_ref.n_words = story_ref.wordIndices.length
 			/* return story_ref; */
 			return corpus;
 		});
@@ -58,8 +71,6 @@ class Story
 		this.title = title;
 		this.subtitle = subtitle;
 		this.rank = rank;
-
-		this.wordIndices = new Array();
 		
 		/* fly away into the land of asynchronous callbacks to load the story */
 		var story_ref = this;

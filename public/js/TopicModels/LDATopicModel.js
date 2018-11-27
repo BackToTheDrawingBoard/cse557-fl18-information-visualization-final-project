@@ -237,6 +237,7 @@ class LDATopicModel extends TopicModel
 	generate_model (corpus, K)
 	{
 		super.generate_model();
+		this.corpus = corpus;
 
 		var V = corpus.vocab.length;
 		var M = corpus.stories.length;
@@ -246,10 +247,10 @@ class LDATopicModel extends TopicModel
 
 		/* awaisathar's magic numbers */
 		// this.configure(documents, V, 1000, 2000, 100, 10);
-		this.configure(documents, V, 100, 10, 50, 5);
+		this.configure(documents, V, 1000, 10, 50, 5);
 		this.gibbs(K, alpha, beta);
 
-		/* importance of a topic to a document */
+		/* importance of a document to a topic */
 		this.theta = this.getTheta();
 		/* importance of terms in a topic */
 		this.phi = this.getPhi();

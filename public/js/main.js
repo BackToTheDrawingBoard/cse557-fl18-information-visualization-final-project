@@ -10,5 +10,5 @@
 	tn.display();
 
 	var side = d3.select("#sidebar");
-	var view_controller = new Controller(side);
+	var view_controller = new Controller(side, tn);
 })();

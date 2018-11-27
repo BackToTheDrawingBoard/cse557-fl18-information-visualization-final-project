@@ -8,9 +8,7 @@ class Controller
 		if (!this.model.hasRun)
 			return;
 
-		console.log("Updating model list");
-		console.log(data);
-		var data = this.model.topics;
+		console.log("Updating model list", this.model.topics);
 
 		var a = this.topic_list.selectAll("a")
 			.data(this.model.topics);
@@ -34,10 +32,15 @@ class Controller
 	 */
 	update ()
 	{
-		if (this.model) {
+		if (!this.model || !this.model.hasRun)
+			return;
+		else
 			console.log("Updating model segment");
-		}
+
+		/* update topic list in the sidebar */
 		this.updateTopicList();
+		/* update the model used by the topic network */
+		this.tn.load_data(this.model);
 	}
 
 	/**
@@ -49,7 +52,8 @@ class Controller
 		var corpus_ref = this.corpus;
 		var control_ref = this;
 		/* parse the data index and fetch the stories */
-		d3.tsv("data/data_index.tsv", row => {
+		// XXX:
+		d3.tsv("data/state_of_the_union/data_index.tsv", row => {
 			row.rank = parseInt(row.rank);
 			return row;
 		}).then(function (data) {
@@ -58,13 +62,11 @@ class Controller
 				/* FIXME: debugging shim */
 				// if (i > 1) break;
 				var d = data[i];
-				corpus_ref.addStory(new Story("data/" + d.file, d.title,
+				corpus_ref.addStory(new Story("data/state_of_the_union/" + d.file, d.title,
 										d.subtitle, d.author, d.rank));
 			}
 			return corpus_ref.readyPromise;
 		}).then(function (d) {
-			console.log("Starting topic model construction", (d));
-
 			control_ref.button_cluster.append("button")
 				.text("Run " + control_ref.model.toString())
 				.on("click", (function (c, d){
@@ -75,6 +77,7 @@ class Controller
 					};
 				})(control_ref, d))
 				;
+			// control_ref.button_cluster.append(
 		});
 	}
 
@@ -82,12 +85,13 @@ class Controller
 	 * @param parent_div: single d3 selection containing the div that's to hold
 	 *                    the controller's interface.
 	 */
-	constructor (parent_div)
+	constructor (parent_div, tn)
 	{
 		/* only option for now */
 		this.model = new LDATopicModel();
 		this.corpus = null;
 		this.parent_div = parent_div;
+		this.tn = tn;
 
 		this.working_div = this.parent_div.append("div")
 			.attr("id", "topic-container")

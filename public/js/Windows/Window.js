@@ -5,8 +5,19 @@
 var g_WindowList = [];
 class Window
 {
-    __hide () { this.window.attr("display", "hidden"); }
-    __show () { this.window.attr("display", "visible"); }
+    __hide ()
+	{
+		this.frame.attr("display", "hidden");
+		if (this.stop)
+			this.stop()
+	}
+
+    __show ()
+	{
+		this.frame.attr("display", "visible");
+		if (this.start)
+			this.start()
+	}
 
     /**
      * display: toggle whether or not a particular window is displayed. If the
@@ -17,15 +28,18 @@ class Window
      */
 	display ()
 	{
-		if (this.window.attr("display") == "hidden") {
+		if (this.frame.attr("display") == "hidden") {
             g_WindowList.forEach(x => x.__hide());
             this.__show();
 			return true;
 		}
+		return true;
+		/*
 		else {
             this.__hide();
 			return false;
 		}
+		*/
 	}
 
     /**
@@ -35,7 +49,8 @@ class Window
      */
     constructor (parent_div)
     {
-		this.window = parent_div.append("div")
+		this.parent_div = parent_div;
+		this.frame = parent_div.append("div")
 			.attr("display", "hidden")
 			;
 

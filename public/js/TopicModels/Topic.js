@@ -39,15 +39,40 @@ class Topic
 		return ret;
 	}
 
+	/** story_affinity:
+	 * @return the relative affinity of a particular story to a topic
+	 */
+	story_affinity (story)
+	{
+		var affinity = 0;
+		/* Iterate over words in the story's frequency table. 'i' is the index
+		 * of the word in the corpus' vocab table, so theta and frequency should
+		 * share the same indexing for each word. */
+		for (var i in story.frequency) {
+			affinity += this.theta[i] * story.frequency[i];
+		}
+
+		return affinity / story.n_words;
+	}
+
+	/**
+	 * @param theta:
+	 * @param phi:
+	 * @param stories:
+	 * @param vocab:
+	 */
 	constructor (theta, phi, stories, vocab)
 	{
 		if (!theta || !phi || !stories || !vocab)
 			throw new Error("Constructor called with too few arguments");
 
+		/* the weight of a word to a story */
 		this.theta = theta;
+		/* the weight of a word to a topic */
 		this.phi = phi;
 		this.stories = stories;
 		this.vocab = vocab;
 		this.sorted_words = null;
+		this.affinities = new Array();
 	}
 }

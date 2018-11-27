@@ -10,6 +10,6 @@ class StoryCardController extends Window
 	constructor (parent_div)
 	{
 		super(parent_div);
-		this.window.classed("story-cards-window", true);
+		this.frame.classed("story-cards-window", true);
 	}
 }
