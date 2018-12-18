@@ -74,5 +74,6 @@ class Topic
 		this.vocab = vocab;
 		this.sorted_words = null;
 		this.affinities = new Array();
+		this.selected = true;
 	}
 }

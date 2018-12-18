@@ -91,7 +91,7 @@ class Controller
 	constructor (parent_div, tn)
 	{
 		/* only option for now */
-		this.model = new LDATopicModel();
+		this.model = new LDA();
 		this.corpus = null;
 		this.parent_div = parent_div;
 		this.tn = tn;

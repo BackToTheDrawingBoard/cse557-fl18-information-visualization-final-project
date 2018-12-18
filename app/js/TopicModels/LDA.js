@@ -1,12 +1,38 @@
+/* array helpers */
+function makeZeroArray (x) {
+	var a = new Array();
+	for (var i = 0; i < x; i++)
+		a[i] = 0;
+
+	return a;
+}
+function make2DZeroArray (x, y) {
+	var a = new Array();
+	for (var i = 0; i < x; i++) {
+		a[i] = new Array();
+		for (var j = 0; j < y; j++)
+			a[i][j] = 0;
+	}
+
+	return a;
+}
+
 /**
- * LDATopicModel
+ * LDA
+ *
+ * Constructs an LDA topic model for a specific corpus.
  *
  * This class is based on the work in awaisathar/lda.js, which can be found at:
  * https://github.com/awaisathar/lda.js.  The code there is distributed under
  * the Apache liscense.
  */
-class LDATopicModel extends TopicModel
+class LDA
 {
+	toString ()
+	{
+		return "LDA Topic Model";
+	}
+
 	/**
 	 * Adapted from awaisathar's implementation.
 	 */
@@ -236,7 +262,14 @@ class LDATopicModel extends TopicModel
 	 */
 	generate_model (corpus, K)
 	{
-		super.generate_model();
+		if (this.is_running) {
+			alert("Please wait for the current topic modelling task to finish "+
+					"before running a new model.");
+			return;
+		}
+		this.is_running = true;
+		this.hasRun = false;
+
 		this.corpus = corpus;
 
 		var V = corpus.vocab.length;
@@ -265,6 +298,20 @@ class LDATopicModel extends TopicModel
 			this.topics.push(new Topic(temp_theta, this.phi[i],
 						corpus.stories, corpus.vocab));
 		}
+
+		this.is_running = false;
+		this.hasRun = true;
+		return;
+	}
+
+	isSafe ()
+	{
+		if (this.is_running && this.hasRun)
+			return true;
+
+		// FIXME: debugging alert
+		alert("Attempting unsafe access to LDA");
+		return false;
 	}
 
     /**
@@ -273,9 +320,11 @@ class LDATopicModel extends TopicModel
      */
     constructor ()
     {
-		super();
-
-		this.name = "LDA";
+		this.hasRun = false;
+		this.is_running = false;
+		this.theta = null;
+		this.phi = null;
+		this.corpus = null;
 
 		/* model specific defaults */
 		/* display update interval */
