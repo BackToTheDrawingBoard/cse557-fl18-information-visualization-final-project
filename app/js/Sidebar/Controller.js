@@ -3,13 +3,10 @@ class Controller
 	/**
 	 * handles topic_list
 	 */
-	updateTopicList (refreshSimulation)
+	updateTopicList (callbacks)
 	{
-		console.log(refreshSimulation);
 		if (!this.model.hasRun)
 			return;
-
-		console.log("Updating model list", this.model.topics);
 
 		var a = this.topic_list.selectAll("a")
 			.data(this.model.topics);
@@ -23,8 +20,10 @@ class Controller
 				return str;
 			})
 			.on('click', d => {
-				d.selected = d.selected ? false : true; 
-				refreshSimulation();
+				d.selected = d.selected ? false : true;
+				for (var i in callbacks)
+					if (typeof callbacks[i] == "function")
+						callbacks[i]();
 			})
 			.text((d, i) => i + ": " + d.getTopWord().word)
 			.classed("selected", d => d.selected)
@@ -43,7 +42,9 @@ class Controller
 		else
 			console.log("Updating model segment");
 
-		this.updateTopicList(this.tn.load_data(this.model));
+		var refreshNetwork = this.tn.load_data(this.model);
+		var refreshCards = this.scc.load_data(this.model);
+		this.updateTopicList([refreshNetwork, refreshCards]);
 	}
 
 	/**
@@ -71,16 +72,21 @@ class Controller
 			return corpus_ref.readyPromise;
 		}).then(function (d) {
 			control_ref.button_cluster.append("button")
-				.text("Run " + control_ref.model.toString())
-				.on("click", (function (c, d){
-					var ctrl_ref = c;
-					return function () {
-						ctrl_ref.model.generate_model(d, 10);
-						ctrl_ref.update();
-					};
-				})(control_ref, d))
+					.text("Run " + control_ref.model.toString())
+					.on("click", (function (c, d){
+						var ctrl_ref = c;
+						return function () {
+							ctrl_ref.model.generate_model(d, 10);
+							ctrl_ref.update();
+						};
+					})(control_ref, d))
+			control_ref.button_cluster.append("button")
+					.text("Show Topic Network")
+					.on("click", () => {control_ref.tn.display()})
+			control_ref.button_cluster.append("button")
+					.text("Show Story Cards")
+					.on("click", () => {control_ref.scc.display()})
 				;
-			// control_ref.button_cluster.append(
 		});
 	}
 
@@ -88,13 +94,14 @@ class Controller
 	 * @param parent_div: single d3 selection containing the div that's to hold
 	 *                    the controller's interface.
 	 */
-	constructor (parent_div, tn)
+	constructor (parent_div, tn, scc)
 	{
 		/* only option for now */
 		this.model = new LDA();
 		this.corpus = null;
 		this.parent_div = parent_div;
 		this.tn = tn;
+		this.scc = scc;
 
 		this.working_div = this.parent_div.append("div")
 			.attr("id", "topic-container")
