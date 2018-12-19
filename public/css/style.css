@@ -18,6 +18,31 @@ body {
 	font-family: Lato;
 }
 
+.toggle-parent {
+	background-color: #1e252b;
+	display: flex;
+	justify-content: space-between;
+	border-radius: 0.8em;
+}
+
+.toggle-parent > div {
+	padding: 0.45em 0.8em 0.6em 0.8em;
+	border-radius: 0.8em;
+	text-align: center;
+	background-color: #1e252b;
+	width: 30%;
+	cursor: pointer;
+}
+
+.processing {
+	cursor: wait;
+}
+
+.toggle-parent > .active {
+	background-color: lightgreen;
+	color: #1e252b;
+}
+
 #annotation-link
 {
 	position: absolute;
