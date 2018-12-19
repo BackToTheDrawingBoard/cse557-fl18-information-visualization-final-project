@@ -18,9 +18,15 @@ class StoryCardController extends Window
 		var cardsEnter = cards.enter().append('div').classed('scc-card', true);
 
 		cardsEnter.append("h2").text(s => s.title);
-		cardsEnter.append("p").text(s => {
-			s.author + " Words: " + s.wordIndices.length
+		cardsEnter.append("ul").html(s => {
+				return "<li>Author: " + s.author + "</li>" +
+				"<li>Words: " + s.wordIndices.length + "</li>" +
+			   	(s.subtitle ? "<li>Subtitle: " + s.subtitle + "</li>" : "") +
+			   	(s.rank ? "<li>Ordinal Rank: " + s.rank + "</li>" : "") +
+			   	(s.filename ? "<li>Filename: " + s.filename + "</li>" : "");
 		});
+
+		cards.exit().remove();
 
 		return;
 	}
@@ -36,8 +42,9 @@ class StoryCardController extends Window
 	load_data (model)
 	{
 		this.model = model;
+		var tn = this;
 
-		return () => {console.log("callback!")};
+		return () => {tn.start()};
 	}
 
 	/**

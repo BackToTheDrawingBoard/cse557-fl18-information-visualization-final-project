@@ -262,12 +262,14 @@ class LDA
 	 */
 	generate_model (corpus, K)
 	{
-		if (this.is_running) {
-			alert("Please wait for the current topic modelling task to finish "+
-					"before running a new model.");
+		if (this.lock) {
+			// alert("Please wait for the current topic modelling task to finish "+
+			alert("Please refresh the page " + 
+					"before running a new model. There's a weird " + 
+					"copy-dependency somewhere that breaks new networks.");
 			return;
 		}
-		this.is_running = true;
+		this.lock = true;
 		this.hasRun = false;
 
 		this.corpus = corpus;
@@ -299,20 +301,12 @@ class LDA
 						corpus.stories, corpus.vocab));
 		}
 
-		this.is_running = false;
+		this.lock = false;
 		this.hasRun = true;
 		return;
 	}
 
-	isSafe ()
-	{
-		if (this.is_running && this.hasRun)
-			return true;
-
-		// FIXME: debugging alert
-		alert("Attempting unsafe access to LDA");
-		return false;
-	}
+	isSafe () { return (this.lock && this.hasRun); }
 
     /**
      * Initialize new LDA model with default values from awaisathar's
@@ -321,7 +315,7 @@ class LDA
     constructor ()
     {
 		this.hasRun = false;
-		this.is_running = false;
+		this.lock = false;
 		this.theta = null;
 		this.phi = null;
 		this.corpus = null;

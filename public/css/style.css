@@ -232,6 +232,10 @@ body {
 	/*box-shadow: 0px -4px 2 darkgrey;*/
 }
 
+.story-cards-window {
+	padding: 2em;
+}
+
 #topic-container {
 	position: absolute;
 	padding: 1.6em 2.5em;
@@ -242,7 +246,7 @@ body {
 	overflow: auto;
 }
 
-.topic-list {
+.topic-list, .story-list {
 	/* color: #F2F5EA; */
 	color: #dbd6d2;
 	list-style: none;
@@ -250,15 +254,33 @@ body {
 	padding: 0;
 }
 
-.topic-list a {
+.topic-list a, .story-list a {
 	/* width: 100%; */
-	background-color: #dbd6d2;
-	color: #2C363F;
-	border: 1px solid lightgreen;
 	margin: 0.4em 0;
 	padding: 0.3em 0.8em 0.5em 0.8em;
 	border-radius: 0.5em;
 	display: block;
+}
+
+.topic-list .selected {
+	background-color: green;
+	border: 2px solid white;
+	color: white;
+}
+.topic-list a {
+	background-color: #dbd6d2;
+	color: #2C363F;
+	border: 1px solid lightgreen;
+}
+
+.story-list .selected {
+	background-color: blue;
+	border: 2px solid white;
+	color: white;
+}
+.story-list a {
+	background-color: blue;
+	color: white;
 }
 
 #topic-container .enabled {
@@ -273,7 +295,7 @@ body {
 
 #topic-controls {
 	padding: 0 1.4em;
-	height: 12em;
+	height: 8em;
 	position: absolute;
 	/*top: 8em;*/
 	bottom: 0;
@@ -292,6 +314,12 @@ body {
 
 #topic-controls > div {
 	margin: 1em 0;
+}
+
+#topic-controls > button,
+#topic-controls > select {
+	display: block;
+	margin: 0.5em auto;
 }
 
 #topic-controls .selected {

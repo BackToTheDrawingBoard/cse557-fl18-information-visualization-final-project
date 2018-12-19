@@ -216,6 +216,17 @@
 				distribution in relation to the topics that they're most
 				attracted to.</p>
 
+				<p>Ultimately, however, the force-generator model turned out to
+				be a step too far towards over-constraining the force-network
+				model. While documents were arranged according to the topic that
+				they most closely corresponded with, fixing the location of
+				topics in the network prevented the topics from distributing
+				themselves towards the documents that they most closesly
+				correspond with. While this seems like a natural and somewhat
+				obvious consequence of fixing the topics, preventing the topics
+				from clustering around stories robbed the force-network of
+				crucial spacial data.</p>
+
 				<div class="figure">
 					<img src="images/figure4.png">
 					<p>Figure 4: The force-network with topics visually labeled
@@ -223,36 +234,116 @@
 					<!-- FIXME -->
 				</div>
 
+				<p>When topics are allowed to shift and pull closer to the
+				documents that they most closesly correspond with, it gives the
+				network a spacial distribution of information. When the topics
+				are fixed, there is no meaningful data encoded in the spacial
+				shape of the network. Rather, all of the important data is
+				encoded in the x-y coordinates of the documents.</p>
+				
+				<p>Now, with the movable stories, the spacial distribution of
+				colour and shapes within the network conveys important
+				information about the topic model. Of particular instance to
+				topic modelling is the case when a topic is generated that is
+				characteristic of only a certain subset of the corpus and
+				loosely connected to the rest of the documents. In the
+				force-generator model, the only impact of this node is that it
+				shifts the distribution of a subset of the documents slightly,
+				perhaps imperceptibly. However, in the model where topics are
+				allowed to move freely, topics that are only loosely connected
+				to the rest of the graph naturally drift away from the rest of
+				the graph and cluster with the subset of the corpus that they
+				correspond with. This behaviour is suitably different from the
+				normal behaviour of a more general topic that it should be
+				visual indicator of important information about the model.</p>
+				
+				<p>Thus, the final iteration of the design was settled on.</p>
+
 				<h3>Implementation</h3>
 				
-				<p>Presently, all that's implemented is the initial topic model
-				generation.  As I've mentioned above, simply getting the
-				algorithms working and producing accessible topics is a
-				non-trivial component of this project, and the more time spent
-				working on the topic modeling algorithms the smoother the
-				resulting interaction with the corpus can be.</p>
+				<p>The LDA topic modelling algorithms are derived from
+				open-source implementations in Javascript that were refactored
+				and re-implemented for this project. They are incorporated into
+				the LDA class of the application. Because these algorithms run
+				in the client browser, they're quite slow compared to better
+				optimized implementations in faster lanuages. However, this
+				allows the users of the application to regenerate different
+				topic models and explore the behaviour of LDA topic modelling
+				at their own liesure.</p>
 
-				<p>The remaining work is to expose knobs for tuning the topic
-				generation parameters, slap the topic model weights into a
-				d3 force-network, and display per-story histograms of the topic
-				distributions.  Then, of course, polish everything to a suitable
-				level of shine.</p>
+				<p>Modifying and implementing LDA turned out to be a bigger
+				challenge than I was expecting. Unfortunately, because of this,
+				work on the topic modelling algorithm consumed more of the
+				project than I had budgeted for at the onset.</p>
+
+				<p>Ultimately, the following features were implemented:</p>
+				<h4>Must-Have Features</h4>
+				<ul>
+					<li>Topic-Model generation in the browser</li>
+					<li>Presentation of the resulting topics</li>
+					<li>A network graph of the topic-document relationships</li>
+					<li>An alternative content-view for per-story information</li>
+				</ul>
+
+				<h4>Bonus Features</h4>
+				<ul>
+					<li>Coding the weight of the relationship strength into the
+					link between documents and topics</li>
+					<li>A preset configuration for the network</li>
+				</ul>
+
+				<p>Notably missing from the must-have features is a details pane
+				to display more information about stories or documents when they
+				were selected. The functionlaity of this requirement was divided
+				and split into two features: tooltips and a "Selected"
+				sub-window. With another window, the interface to the
+				application became too cluttered to use efficiently. The
+				tooltips in the project deliver the same information that would
+				have been contained in a Details window. For topics, the
+				tooltips display the ten most important words in the topic, and
+				the document display the title and author of the document.</p>
+
+				<p>Furthermore, the alternate content-view for explicitly
+				stories made the details pane largely redundant, as there was no
+				information that appeared in the details of the story that did
+				not also appear in the story cards.</p>
+
+				<p>In the bonus features, the preset configuration for the
+				network inserts the topics in a ring around the stories, then
+				allows the force-simulation to do the rest of the work. The
+				initial distribution of the topics is most evident in Figure 3,
+				where the ring distribution is visible thanks to the static
+				position of the topics in the network.</p>
+
+				<p>Otherwise, all the features listed are implemented in
+				straight-forward ways.</p>
 
 				<h3>Evaluation</h3>
-				
-				<p>The biggest improvement that I think I can make going
-				forwards is by collecting a different corpus, one composed of
-				shorter texts.  Calculating a topic-model of Moby Dick is a
-				non-trivial task, and it's more than enough to bring my desktop
-				computer to a crawl.</p>
-				
-				<p>Other than selecting different texts for the corpus, though,
-				the remaining work is just grinding out an interface for the
-				algorithm I've re-implemented.  I was quite surprised at how
-				ill-kept the LDA library that I found on GitHub was, and, while
-				I was able to reuse some of the code, I also would up
-				re-implementing a large portion of the modeling code to better
-				suit the object model of my application.</p>
+
+				<p>Ultimately, this project suffered most from a lack of hours
+				spent working. The proposal would have been a reasonable task
+				for a group of three working part-time on the project, or the
+				full focus of a single group member. However, with the kind of
+				split-focus that the end of the semester demands, the project
+				ultimately didn't receive the level of polish necessary to take
+				it from the functional to the polished state. Rough edges
+				abound.</p>
+
+				<p>I think, however, that the tool is an effective means of
+				visualizing the abstract data embedded in a topic model,
+				specifically in regards to visually communicating the shape of
+				the topic model in relation to the corpus.</p>
+
+				<!-- FIXME: elaborate -->
+
+				<p>While this project has accomplished the desired goal of the
+				proposal--in-browser exploration and visualization of LDA topic
+				models--there remains ample opportunity for extension to the
+				project. The existing code base could easily be expanded to
+				accomodate multiple different kinds of topic models. With a real
+				back-end, users could upload and analyzed their own corpora.
+				Selecting between different corpora would be a trivial
+				enhancement.</p>
 
 			</div>
 		</div>

@@ -28,11 +28,16 @@ class TopicNetwork extends Window
 	 */
 	load_data (model)
 	{
-		console.log(model);
+		/* lock released at the end of redraw() */
+		if (this.lock)
+			return;
+		this.lock = true;
+
 		/* story -> topic -> weight */
 		this.weights = model.theta;
 		this.stories = model.corpus.stories;
 		this.topics = model.topics;
+		this.lock = model.lock;
 
 		return this.redraw();
 	}
@@ -45,14 +50,12 @@ class TopicNetwork extends Window
 		var li_enter = li.enter().append('li');
 		li_enter.append('b').text(s => s.title);
 		li_enter.append('span').text(s => s.author);
-		console.log(this.stories.filter(s => s.selected));
 
 		li.exit().remove();
 	}
 
 	redraw ()
 	{
-
 		var rect = this.svg.node().getBoundingClientRect();
 		var N = this.stories.length;
 		var M = this.topics.length;
@@ -75,6 +78,7 @@ class TopicNetwork extends Window
 				color : "blue",
 				data : this.stories[i],
 				radius : 10,
+				title : this.stories[i].title + "\n" + this.stories[i].author,
 				/*
 				x : 0,
 				y : 0
@@ -89,6 +93,7 @@ class TopicNetwork extends Window
 				isTopic : true,
 				color : "green",
 				data : this.topics[i],
+				title : this.topics[i].getTopWord().word,
 				radius : 20,
 				x : Math.sin(rad) * (rect.width * 0.4),
 				y : Math.cos(rad) * (rect.height * 0.4)
@@ -118,7 +123,7 @@ class TopicNetwork extends Window
 			.range([0.1, 6]);
 		var simulation = d3.forceSimulation(nodes)
 			.force("charge", d3.forceManyBody().strength(-600))
-			.force("center", d3.forceCenter())
+			.force("center", d3.forceCenter(0, 0))
 			.force("bump", d3.forceCollide().radius(d => d.radius))
 			.stop();
 
@@ -129,34 +134,22 @@ class TopicNetwork extends Window
 			return d3.drag()
 				.on('start', (n) => {
 					if (!d3.event.active) {
-						console.log("restarting sim");
 						sim.alphaTarget(0.3).restart();
 					}
-					// if (n.isTopic) {
-					if (false) {
-						n.fx = d3.event.x;
-						n.fy = d3.event.y;
-					}
-					else {
-						n.data.selected = !n.data.selected;
-						tn.update_selection_list();
-					}
+					n.fx = d3.event.x;
+					n.fy = d3.event.y;
+					n.data.selected = !n.data.selected;
+					tn.update_selection_list();
 				})
 				.on('drag', (n) => {
-					// if (n.isTopic) {
-					if (false) {
-						n.fx = d3.event.x;
-						n.fy = d3.event.y;
-					}
+					n.fx = d3.event.x;
+					n.fy = d3.event.y;
 				})
 				.on('end', (n) => {
 					if (!d3.event.active)
 						sim.alphaTarget(0.001);
-					// if (!n.isTopic) {
-					if (false) {
-						n.fx = null;
-						n.fy = null;
-					}
+					n.fx = null;
+					n.fy = null;
 				})
 		};
 
@@ -170,7 +163,7 @@ class TopicNetwork extends Window
 				.attr('y1', d => d.source.y)
 				.attr('x2', d => d.target.x)
 				.attr('y2', d => d.target.y)
-				.style('visibility', d => !d.topic.selected ?
+				.style('visibility', d => !d.topic.enabled ?
 											'hidden' : 'visible')
 				;
 			lines.exit().remove();
@@ -192,11 +185,25 @@ class TopicNetwork extends Window
 				.attr('stroke', 'white')
 				.attr('fill', 'white')
 				;
+			circlesEnter.append('title')
+				.text(d => d.title)
+				;
 			circlesEnter.merge(circles)
 				.attr('transform', d => 'translate(' + d.x + ',' + d.y + ')')
-				.style('visibility', d => d.isTopic && !d.data.selected ?
+				.style('visibility', d => d.isTopic && !d.data.enabled ?
 											'hidden' : 'visible')
-				.classed('circ-selected', d => !d.isTopic && d.data.selected)
+				.attr('stroke-width', d => {
+					if (!d.isTopic && d.data.selected)
+						return 4;
+					else
+						return 0;
+				})
+				.attr('stroke', d => {
+					if (!d.isTopic && d.data.selected)
+						return "white";
+					else
+						return null;
+				})
 				;
 			circles.exit().remove();
 		};
@@ -208,18 +215,20 @@ class TopicNetwork extends Window
 		var refresh_forces = function () {
 			simulation.alpha(0.3).restart();
 			for (var i = 0; i < M; i++) {
-				simulation.force("topic_" + i, tn.topics[i].selected
+				simulation.force("topic_" + i, tn.topics[i].enabled
 					? d3.forceLink(edges[i])
 						.id(n => n.id)
 						.strength(d => link_strength_scale(d.weight))
 					: null
 				)
 			}
+			tn.update_selection_list();
 		};
 		if (this.enabled)
 			refresh_forces();
 		this.refreshDisplay = refresh_forces;
 		this.suspendDisplay = simulation.stop;
+		// this.lock = false;
 		return refresh_forces;
 	}
 
