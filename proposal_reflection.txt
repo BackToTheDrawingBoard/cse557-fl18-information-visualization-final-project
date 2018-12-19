@@ -18,7 +18,10 @@ And out of the optional features that I considered implementing, I
 accomplished the following:
   - Coding the weight of the relationship strength into the link between
     stories and topics
-  - Preset configurations for the network (consider making a force to
+  - A preset configuration for the network that arranges the topics
+    around the 
+    
+    (consider making a force to
     repel the topics from eachother)
 
 

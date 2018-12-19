@@ -34,27 +34,24 @@
 			</div>
 			<div class="log-body">
 
-				<p>Most of the work that I've accomplished thus far has been on
-				the object-model side of things, with decidedly little to show
-				for the actual visualization portion of the project.
-				Nonetheless, what follows is the present state of the topic
-				modeling project.</p>
-				
 				<h3>Overview and Motivation</h3>
 
-				<p>Not much has changed for the overview and motivation of the
-				project.  The desire is still to explore the relational
-				implications of the data in a topic model by means of a
-				force-network.  The main reason for this is that I find topic
-				modeling fascinating, and I want to see how different ways of
-				tuning a topic model affects the way the data distributes itself
-				in multiple dimensions.</p>
-				
-				<p>The major benefit of using a force-network for visualizing
-				the topic model is that it allows stories and topics to become
-				implicitly equal, whereas most quantitative means of analyzing
-				the topic model lend themselves to seeing the topics as strictly
-				an observation on the corpus of text.</p>
+				<p>During my junior year, I took Dr. Anupam Basu's Introduction
+				to Digital Humanities course, in which we discussed topic
+				models.  In our class, we explored a tool called
+				<a href="http://vep.cs.wisc.edu/serendip/">Serendip</a>, which
+				visualizes topics as a matrix of relationships between texts in
+				the corpora and topics.  Then, this semester, I took Dr.
+				Neumann's Analysis of Network Data class, and it occurred to me
+				that Serendip's matrix presentation of the topic model is
+				visually similar to an adjacency matrix.</p>
+
+				<p>I wanted to take a distinctly different approach than
+				Serendip, though.  While Serendip focuses on drilling down into
+				specific relationships and presenting a large volume of
+				information at once, I wanted to focus more on exploring the
+				topic-story relationship in a more approachable, intuitive
+				manner.</p>
 				
 				<h3>Questions</h3>
 				
@@ -79,13 +76,43 @@
 
 				<h3>Data</h3>
 				
-				<p>For my corpus, I've somewhat arbitrarily chosen the twenty
-				most popular text on Project Gutenberg, selected from 
+				<p>For my initial corpus, I arbitrarily chose the twenty most
+				popular texts on Project Gutenberg, selected from 
 				<a href="http://www.gutenberg.org/browse/scores/top">this page</a>. 
 				Unfortunately, JavaScript isn't quite as efficient as the C++
 				and Python topic modeling implementations that I'm familiar
 				with, and it's turned out to be extraordinarily slow to process
 				so many records with the LDA algorithm.</p>
+
+				<p>To facilitate faster development, I actually took advantage
+				of the flexibility of my approach and turned to analyzing the
+				five most recent State of the Union addresses. However, this
+				decision turned out to be more informative as to the thesis of
+				my project than I had initially anticipated.</p>
+
+				<div class="figure">
+					<img src="images/figure1.png">
+					<p>Figure 1: A prototype colour-coded network graph of State
+					of the Union addresses.</p>
+				</div>
+				
+				<p>As I began working on my prototype with the more
+				politically-oriented data set, I had something of a small
+				epiphany. In order to stay true to what I intuited the purpose
+				of my project to be, I had to actively dissuade myself from
+				delving into enhancing the model with functionality specific to
+				that data set. For example, colour-coding nodes based on their
+				party affiliation, while interesting in the context of a
+				politically informed data set, would be nigh-completely
+				irrelevant for a data set like the Gutenberg Top 20 that I
+				started and finished with.</p>
+				
+				<p>This intuitive discouragement, however, made little sense in
+				the context of the assignment that we, as a class, had been
+				given. This disjunction in intent finally crystalized the intent
+				of my application. Rather than creating a bespoke visualization
+				for a specific set of data, my intention was to create a tool to
+				visualize and explore topic models themselves.</p>
 
 				<p>For further development of the data set, it may be worth
 				swapping out the Top-20 texts for something smaller.  Song
@@ -110,33 +137,91 @@
 				simple in theory (it's just a list of weights between stories
 				and topics, after all) and yet also exceptionally difficult to
 				visualize in one's head.</p>
-
 				
-				<p>More detail on the exploratory data analysis can be found in
-				the initial project proposal, which is linked in the title bar.
-				</p>
-
+				<p>Fortunately, the data itself requires very little
+				pre-processing. All that was requried for the Gutenberg Top 20
+				was the removal of the Project Gutenberg header and footer from
+				the documents after they were retrieved. The State of the Union
+				addresses required even less cleanup. Again, this versatality is
+				one of the strong points for the design of my application. The
+				data set can easily be expanded or altered entirely with a
+				single-line modification to the application and minimal
+				manipulation of the initial texts.</p>
+				
 				<h3>Design Evolution</h3>
+
+				<p>The original impetus behind this assignment was to create a
+				visual model to frame the relationship between documents in a
+				corpus and the topics extrapolated from the corpus. When I was
+				at the point of framing my project proposal, the motivation
+				towards displaying a topic model as a force-network was simply
+				based on the notion that different documents, or stories, have
+				different affinities towards different topics.</p>
+
+				<p>The unrefined notion of the force-network for a topic model
+				was immediately appealing to me, because the force-network
+				facilitated the spacial expression of the "pull" that each topic
+				has on each story.  It's exceedingly rare to have a topic model
+				wherein a topic has no relation to a story, but topic models can
+				often have a story that's drawn particularly strongly to an
+				individual topic.</p>
+
+				<div class="figure">
+					<img src="images/figure2.png">
+					<p>Figure 2: The initial force-network layout with absolute
+					equivalence between documents and topics.</p>
+				</div>
+
+				<p>With these characteristics in mind, I continued with the
+				development of the force-network model. My initial intent was to
+				create a visual model that established a visual equivalence
+				between the topics and the documents as elements of the network.
+				My initial conception of the force-network was as a means of
+				establishing visual equivalence between topics and stories. This
+				equalizing intent was based on the notion that both data
+				structures are fundamentally ordered sets of words, though
+				the documents in the data set are created by humans and the
+				topics are the results of a data analysis algorithm.</p>
 				
-				<p>Most of the design evolution that's occurred has been on the
-				back-end of the project.  The object model has matured
-				significantly, and I'm confident that it's readily extensible at
-				this point.  With the majority of the scaffolding out of the way
-				for generating topics, processing the data, and pulling the
-				topics into accessible form, the remainder of the project should
-				be simply implementing functionality that I've already practiced
-				in the studios and previous assignments.  The single biggest
-				hurdle that I'm facing now is implementing all the knobs and
-				dials to tune the topic model creation.</p>
+				<p>However, as the design progressed, I quickly found that
+				framing stories and topics as visual equals quickly dilluted the
+				meaning of the topic model to the point of being nigh-useless.
+				Without a visual context for the information in the network, the
+				network ceased to have any meaning.</p>
 				
-				<p>The project is maturing into a more interactive design than I
-				was initially anticipating.  As I'm creating more and more of
-				the application, I'm finding that I'm far more interested in
-				tuning and manipulating the topic modeling algorithm than I am
-				in necessarily exploring the resulting model.  I will likely
-				pursue this interest and continue pushing for greater expression
-				of the model, rather than simply implementing canned presets for
-				the algorithm.</p>
+				<p>My first method of addressing the lack of information was to
+				encode the roles of the nodes in the graph with both colour and
+				size. Somewhat arbitrarily, topics became green and large,
+				whereas documents remained blue and small.</p>
+
+				<div class="figure">
+					<img src="images/figure3.png">
+					<p>Figure 3: The force-network with topics configured as
+					static "force-generators".</p>
+				</div>
+				
+				<p>As the network model matured, I developed the concept of
+				having force-generator nodes and force-receiver nodes as a means
+				of re-asserting the directed relationship between documents and
+				topics. Force-generator nodes (topics) were assigned a fixed
+				position based on their order in the list of topics, and
+				force-receiver nodes were set in the middle of the graph. d3's
+				force-network simulation then handled the distribution of the
+				force-receivers and allowed for repositioning of the topic
+				nodes.</p>
+
+				<p>This framework of force-generator nodes allowed for a clearer
+				expression of hierarchy in the display of the topic model, and
+				additionally force the documents into a somewhat logical spacial
+				distribution in relation to the topics that they're most
+				attracted to.</p>
+
+				<div class="figure">
+					<img src="images/figure4.png">
+					<p>Figure 4: The force-network with topics visually labeled
+					but without the force-generator model.</p>
+					<!-- FIXME -->
+				</div>
 
 				<h3>Implementation</h3>
 				

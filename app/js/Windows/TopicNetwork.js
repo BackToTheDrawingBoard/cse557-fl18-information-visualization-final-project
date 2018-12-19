@@ -90,8 +90,8 @@ class TopicNetwork extends Window
 				color : "green",
 				data : this.topics[i],
 				radius : 20,
-				fx : Math.sin(rad) * (rect.width * 0.4),
-				fy : Math.cos(rad) * (rect.height * 0.4)
+				x : Math.sin(rad) * (rect.width * 0.4),
+				y : Math.cos(rad) * (rect.height * 0.4)
 			});
 		}
 		/* Setup edges for the simulation */
@@ -117,8 +117,8 @@ class TopicNetwork extends Window
 						d3.max(flat_edges.map(e => e.weight))])
 			.range([0.1, 6]);
 		var simulation = d3.forceSimulation(nodes)
-			// .force("charge", d3.forceManyBody().strength(-5))
-			// .force("center", d3.forceCenter())
+			.force("charge", d3.forceManyBody().strength(-600))
+			.force("center", d3.forceCenter())
 			.force("bump", d3.forceCollide().radius(d => d.radius))
 			.stop();
 
@@ -132,7 +132,8 @@ class TopicNetwork extends Window
 						console.log("restarting sim");
 						sim.alphaTarget(0.3).restart();
 					}
-					if (n.isTopic) {
+					// if (n.isTopic) {
+					if (false) {
 						n.fx = d3.event.x;
 						n.fy = d3.event.y;
 					}
@@ -142,7 +143,8 @@ class TopicNetwork extends Window
 					}
 				})
 				.on('drag', (n) => {
-					if (n.isTopic) {
+					// if (n.isTopic) {
+					if (false) {
 						n.fx = d3.event.x;
 						n.fy = d3.event.y;
 					}
@@ -150,7 +152,8 @@ class TopicNetwork extends Window
 				.on('end', (n) => {
 					if (!d3.event.active)
 						sim.alphaTarget(0.001);
-					if (!n.isTopic) {
+					// if (!n.isTopic) {
+					if (false) {
 						n.fx = null;
 						n.fy = null;
 					}

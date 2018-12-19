@@ -18,6 +18,18 @@ body {
 	font-family: Lato;
 }
 
+.figure > img {
+	margin: 0 auto;
+	width: 100%;
+}
+
+.figure > p {
+	font-style: italic;
+	width: 70%;
+	margin: 0px auto 16px auto;
+	text-align: center;
+}
+
 .toggle-parent {
 	background-color: #1e252b;
 	display: flex;
