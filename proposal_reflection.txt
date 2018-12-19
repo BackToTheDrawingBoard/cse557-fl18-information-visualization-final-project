@@ -1,0 +1,40 @@
+Introduction
+------------
+
+My application, which composes the body of my final project, is an topic
+modelling program that takes in a corpus of text and displays the
+results as a force-network.
+
+The must-have features that I set out for myself and have subsequently
+implemented are:
+  - Topic-Model generation (check)
+  - Presentation of resulting topics (check)
+  - Network graph of topic-story relationships (check)
+  - Alternative content-view for presenting per-topic story breakdown ()
+  - A "details" pane that exposes more information about a topic or
+    story when selected. ()
+
+And out of the optional features that I considered implementing, I
+accomplished the following:
+  - Coding the weight of the relationship strength into the link between
+    stories and topics
+  - Preset configurations for the network (consider making a force to
+    repel the topics from eachother)
+
+
+Project Visualization Maturation
+--------------------------------
+
+The original impetus behind this assignment was to create a visual model
+to frame the relationship between documents in a corpus and the topics
+extrapolated from the corpus. When I was at the point of framing my
+project proposal, the motivation towards displaying a topic model as a
+force-network was simply based on the notion that different documents,
+or stories, have different affinities towards different topics.
+
+The unrefined notion of the force-network for a topic model was
+immediately appealing to me, because the force-network facilitated the
+spacial expression of the "pull" that each topic has on each story.
+It's exceedingly rare to have a topic model wherein a topic has no
+relation to a story, but topic models can often have a story that's
+drawn particularly strongly to an individual topic.
