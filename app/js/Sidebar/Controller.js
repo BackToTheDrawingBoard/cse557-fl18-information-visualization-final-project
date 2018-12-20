@@ -92,6 +92,8 @@ class Controller
 		if (corpusString == "empty")
 			return;
 
+		corpusSelectButton.attr("disabled", "disabled");
+
 		this.corpus = new Corpus();
 		var corpus_ref = this.corpus;
 		var control_ref = this;
@@ -174,7 +176,6 @@ class Controller
 			.attr("id", "corpus-select")
 			.on("click", () => {
 				if (!d3.event.active) {
-					corpusSelectButton.attr("disabled", "disabled");
 					this.initCorpus();
 				}
 			})
