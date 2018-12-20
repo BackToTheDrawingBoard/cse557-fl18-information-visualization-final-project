@@ -84,8 +84,8 @@ class Controller
 	 */
 	initCorpus ()
 	{
-		var corpusSelect = document.getElementById("corpus-select");
-		var corpusString = corpusSelect[corpusSelect.selectedIndex].value;
+		var corpusSelect = d3.select("#corpus-select");
+		var corpusString = corpusSelect.property("value");
 
 		console.log(corpusString);
 
